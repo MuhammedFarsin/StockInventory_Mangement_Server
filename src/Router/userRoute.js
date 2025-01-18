@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session')
 const { authenticate, authorize } = require('../Middleware/middleware');
-const { dashboard, createProduct, getProduct, deleteProduct, GetEditProduct, updateProduct } = require('../Controller/productController');
+const { showProducts, dashboard, createProduct, getProduct, deleteProduct, GetEditProduct, updateProduct } = require('../Controller/productController');
  const { GetSaleProduct, SaleProduct } = require('../Controller/orderController');
 const { signup, login } = require("../Controller/userController");
 const { upload } = require("../Config/config")
@@ -14,7 +14,8 @@ route.use(session({
 }))
 
 route.post("/login", login )
-route.post("/signup", signup )  
+route.post("/signup", signup ) 
+route.get("/products", authenticate, authorize(["user"]), showProducts ) 
  route.get("/admin/dashboard", authenticate, authorize(["admin"]), dashboard) 
 route.get("/admin/get-products",authenticate, authorize(["admin"]),getProduct)
 route.post("/admin/create-product", authenticate, authorize(["admin"]), upload.single("productImage"), createProduct);

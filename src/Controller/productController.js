@@ -1,6 +1,14 @@
 const Product = require("../Model/productModel");
 const Order = require("../Model/orderModel");
 
+const showProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch products", error: error.message });
+  }
+}
 const dashboard = async (req, res) => {
   try {
     const view = req.query.view || 'daily';
@@ -195,4 +203,4 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { createProduct, getProduct, deleteProduct, GetEditProduct, updateProduct, dashboard };
+module.exports = { showProducts,createProduct, getProduct, deleteProduct, GetEditProduct, updateProduct, dashboard };
